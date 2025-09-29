@@ -4,37 +4,32 @@ const inputEl = document.getElementById("input-el")
 const inputBtn = document.getElementById("input-btn")
 const ulEl = document.getElementById("ul-el")
 const deleteBtn = document.getElementById("delete-btn")
-const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
 const tabBtn = document.getElementById("tab-btn")
 
-tabBtn.addEventListener("click", function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){// gets the current active tab in the current window
-        myLeads.push(tabs[0].url)// pushes the URL of the current tab to the array
-        localStorage.setItem("myLeads", JSON.stringify(myLeads))
-        render(myLeads)
-    })
-})
-
+// Load saved leads from localStorage
+const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"))
 if (leadsFromLocalStorage) {
     myLeads = leadsFromLocalStorage
     render(myLeads)
 }
 
+// RENDER FUNCTION
 function render(leads) {
     let listItems = ""
     for (let i = 0; i < leads.length; i++) {
         listItems += `
             <li>
-                <a href="#" class="lead-link" data-url='${leads[i]}'>
+                <a href="#" class="lead-link" data-url="${leads[i]}">
                     ${leads[i]}
                 </a>
-                
+                <button class="delete-single-btn" data-index="${i}">X</button>
             </li>
         `
     }
     ulEl.innerHTML = listItems  
-}
- const links = document.querySelectorAll(".lead-link")
+
+    // Open link in a new tab
+    const links = document.querySelectorAll(".lead-link")
     links.forEach(link => {
         link.addEventListener("click", (e) => {
             e.preventDefault()
@@ -42,18 +37,40 @@ function render(leads) {
         })
     })
 
+    // Delete one link (always remove, even if it's the current site)
+    const deleteBtns = document.querySelectorAll(".delete-single-btn")
+    deleteBtns.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const index = e.target.dataset.index
+            myLeads.splice(index, 1) // remove one
+            localStorage.setItem("myLeads", JSON.stringify(myLeads))
+            render(myLeads)
+        })
+    })
+}
 
-deleteBtn.addEventListener("click", function() {
-    localStorage.clear() // clears all local storage
-    myLeads = [] // clears the array
-    render(myLeads) // re-renders the list
+// SAVE INPUT BUTTON
+inputBtn.addEventListener("click", function() {
+    if (inputEl.value.trim() !== "") {
+        myLeads.push(inputEl.value)
+        inputEl.value = ""
+        localStorage.setItem("myLeads", JSON.stringify(myLeads))
+        render(myLeads)
+    }
 })
 
+// SAVE TAB BUTTON
+tabBtn.addEventListener("click", function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        myLeads.push(tabs[0].url)
+        localStorage.setItem("myLeads", JSON.stringify(myLeads))
+        render(myLeads)
+    })
+})
 
-inputBtn.addEventListener("click", function() {
-    myLeads.push(inputEl.value)
-    inputEl.value = ""
-    localStorage.setItem("myLeads", JSON.stringify(myLeads))
+// DELETE ALL BUTTON
+deleteBtn.addEventListener("click", function() {
+    localStorage.clear()
+    myLeads = []
     render(myLeads)
 })
-
