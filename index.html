@@ -1,14 +1,23 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="index.css">
-    </head>
-    <body>
-        <input type="text" id="input-el">
-        <button id="input-btn">SAVE INPUT</button>
-        <button id="tab-btn">SAVE TAB</button>
-        <button id="delete-btn">DELETE ALL</button>
-        <ul id="ul-el">
-        </ul>
-        <script src="index.js"></script>
-    </body>
+  <head>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">URLs Safe</h1>
+
+      <div class="input-group">
+        <input type="text" id="input-el" placeholder="Enter a URL...">
+        <button id="input-btn">Save</button>
+      </div>
+
+      <div class="actions">
+        <button id="tab-btn">Save Current Tab</button>
+        <button id="delete-btn" class="danger">Delete All</button>
+      </div>
+
+      <ul id="ul-el"></ul>
+    </div>
+    <script src="index.js"></script>
+  </body>
 </html>
