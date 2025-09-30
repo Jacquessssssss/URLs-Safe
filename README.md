@@ -24,4 +24,23 @@ You can quickly save the current tab, add custom links, and remove them when no 
 4. Click **Load unpacked** and select the project folder.
 5. The extension icon should now appear in your toolbar.
 
+---
+
+## 🔒 Privacy
+
+This extension **does not collect, store, or share any personal data**.  
+All saved links remain in your browser’s `localStorage`.
+
+---
+
+## 👨‍💻 Author
+
+Developed by **Jacques Daoura**
+
+---
+
+## 📝 License
+
+MIT License. Free to use and modify.
+
 
